@@ -24,4 +24,10 @@ public class Post {
     private String description;
     @Size(min = 10, max = 1440, message = "Your post content should be between 10 and 1440 characters")
     private String content;
+
+    public Post(String title, String description, String content) {
+        this.title = title;
+        this.description = description;
+        this.content = content;
+    }
 }
