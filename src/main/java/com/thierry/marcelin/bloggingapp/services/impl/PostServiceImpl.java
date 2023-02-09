@@ -56,6 +56,11 @@ public class PostServiceImpl implements PostService {
         return mapToDto(savedPost);
     }
 
+    @Override
+    public String deletePost(long id) {
+        return null;
+    }
+
     // Convert entity to DTO
     private PostDTO mapToDto(Post post){
         return new PostDTO(post.getId(), post.getTitle(), post.getDescription(), post.getContent());
