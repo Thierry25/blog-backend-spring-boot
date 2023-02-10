@@ -26,6 +26,11 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         var errors = new ErrorDetails(LocalDateTime.now(), ex.getLocalizedMessage(), request.getDescription(false));
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(BlogAPIException.class)
+    public ResponseEntity<ErrorDetails> handleErr(Exception ex, WebRequest request){
+        var errors = new ErrorDetails(LocalDateTime.now(), ex.getLocalizedMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

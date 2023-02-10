@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class CommentController {
@@ -17,8 +19,18 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/posts/{id}/comments")
-    public ResponseEntity<CommentDTO> createNewComment(@PathVariable long id, @Valid @RequestBody CommentDTO commentDTO){
-        return new ResponseEntity<>(commentService.createNewComment(id, commentDTO), HttpStatus.CREATED);
+    @PostMapping("/posts/{postId}/comments")
+    public ResponseEntity<CommentDTO> createNewComment(@PathVariable long postId, @Valid @RequestBody CommentDTO commentDTO){
+        return new ResponseEntity<>(commentService.createNewComment(postId, commentDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<List<CommentDTO>> getAllComments(@PathVariable long postId){
+        return new ResponseEntity<>(commentService.getAllComments(postId), HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable long postId, @PathVariable long commentId){
+        return new ResponseEntity<>(commentService.getCommentById(postId, commentId), HttpStatus.OK);
     }
 }
