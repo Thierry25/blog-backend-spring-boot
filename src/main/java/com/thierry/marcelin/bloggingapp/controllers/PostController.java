@@ -1,9 +1,9 @@
 package com.thierry.marcelin.bloggingapp.controllers;
 
-import com.thierry.marcelin.bloggingapp.dto.PostDTO;
+import com.thierry.marcelin.bloggingapp.payload.PostResponse;
+import com.thierry.marcelin.bloggingapp.payload.dto.PostDTO;
 import com.thierry.marcelin.bloggingapp.services.PostService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +26,11 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDTO>> getAllPosts(){
-        return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+    public ResponseEntity<PostResponse> getAllPosts
+            (@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+             ){
+        return new ResponseEntity<>(postService.getAllPosts(pageNo, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -1,4 +1,4 @@
-package com.thierry.marcelin.bloggingapp.dto;
+package com.thierry.marcelin.bloggingapp.payload.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
