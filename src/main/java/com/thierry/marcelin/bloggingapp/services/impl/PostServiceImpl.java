@@ -7,6 +7,7 @@ import com.thierry.marcelin.bloggingapp.models.Post;
 import com.thierry.marcelin.bloggingapp.repositories.PostRepository;
 import com.thierry.marcelin.bloggingapp.services.PostService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +33,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getAllPosts(int pageNo, int pageSize) {
-        var pageable = PageRequest.of(pageNo, pageSize);
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        // Ascending or descending
+        var sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+//        Only creates a pageable object
+//        var pageable = PageRequest.of(pageNo, pageSize);
+        var pageable = PageRequest.of(pageNo, pageSize, sort);
+
         var posts = postRepository.findAll(pageable);
         var content = postRepository.findAll(pageable).getContent()
                 .stream()

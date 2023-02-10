@@ -3,12 +3,13 @@ package com.thierry.marcelin.bloggingapp.controllers;
 import com.thierry.marcelin.bloggingapp.payload.PostResponse;
 import com.thierry.marcelin.bloggingapp.payload.dto.PostDTO;
 import com.thierry.marcelin.bloggingapp.services.PostService;
+import com.thierry.marcelin.bloggingapp.utils.AppConstants;
 import jakarta.validation.Valid;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -27,15 +28,21 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostResponse> getAllPosts
-            (@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+            (@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
              ){
-        return new ResponseEntity<>(postService.getAllPosts(pageNo, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getAllPosts(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDTO> getPostById(@PathVariable long id){
-        return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
+    public ResponseEntity<Object> getPostById(@PathVariable long id){
+        var entity = EntityModel.of(postService.getPostById(id));
+        var link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass())
+                .getAllPosts(0,10,"id", "asc"));
+        entity.add(link.withRel("all-posts"));
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
