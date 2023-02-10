@@ -6,6 +6,7 @@ import com.thierry.marcelin.bloggingapp.exceptions.ResourceNotFoundException;
 import com.thierry.marcelin.bloggingapp.models.Post;
 import com.thierry.marcelin.bloggingapp.repositories.PostRepository;
 import com.thierry.marcelin.bloggingapp.services.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final ModelMapper mapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -82,12 +85,16 @@ public class PostServiceImpl implements PostService {
 
     // Convert entity to DTO
     private PostDTO mapToDto(Post post) {
-        return new PostDTO(post.getId(), post.getTitle(), post.getDescription(), post.getContent());
+        return mapper.map(post, PostDTO.class);
+        // Manually
+        //  return new PostDTO(post.getId(), post.getTitle(), post.getDescription(), post.getContent());
     }
 
     // Convert DTO to entity
     private Post mapToEntity(PostDTO postDTO) {
-        return new Post(postDTO.getTitle(), postDTO.getDescription(), postDTO.getContent());
+        return mapper.map(postDTO, Post.class);
+        // Manually
+        // return new Post(postDTO.getTitle(), postDTO.getDescription(), postDTO.getContent());
     }
 
 }

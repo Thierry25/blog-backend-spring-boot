@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +18,5 @@ public class PostDTO {
     private String description;
     @Size(min = 10, max = 1440, message = "Your post content should be between 10 and 1440 characters")
     private String content;
+    private Set<CommentDTO> comments;
 }

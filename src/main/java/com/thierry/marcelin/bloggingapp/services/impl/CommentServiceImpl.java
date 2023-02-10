@@ -8,6 +8,7 @@ import com.thierry.marcelin.bloggingapp.payload.dto.CommentDTO;
 import com.thierry.marcelin.bloggingapp.repositories.CommentRepository;
 import com.thierry.marcelin.bloggingapp.repositories.PostRepository;
 import com.thierry.marcelin.bloggingapp.services.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final ModelMapper mapper;
 
-    public CommentServiceImpl(PostRepository postRepository, CommentRepository commentRepository) {
+    public CommentServiceImpl(PostRepository postRepository, CommentRepository commentRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -78,11 +81,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment mapToEntity(CommentDTO commentDTO){
-        return new Comment(commentDTO.getName(), commentDTO.getEmail(), commentDTO.getBody());
+        return mapper.map(commentDTO, Comment.class);
+        //return new Comment(commentDTO.getName(), commentDTO.getEmail(), commentDTO.getBody());
     }
 
     private CommentDTO mapToDTO(Comment comment){
-        return new CommentDTO(comment.getId(), comment.getName(), comment.getEmail(), comment.getBody());
+        return mapper.map(comment, CommentDTO.class);
+        // return new CommentDTO(comment.getId(), comment.getName(), comment.getEmail(), comment.getBody());
     }
 
     private Post currentPost(long id){
