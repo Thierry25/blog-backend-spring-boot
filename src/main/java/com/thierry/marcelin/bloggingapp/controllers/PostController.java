@@ -1,7 +1,9 @@
 package com.thierry.marcelin.bloggingapp.controllers;
 
 import com.thierry.marcelin.bloggingapp.payload.PostResponse;
+import com.thierry.marcelin.bloggingapp.payload.dto.CommentDTO;
 import com.thierry.marcelin.bloggingapp.payload.dto.PostDTO;
+import com.thierry.marcelin.bloggingapp.services.CommentService;
 import com.thierry.marcelin.bloggingapp.services.PostService;
 import com.thierry.marcelin.bloggingapp.utils.AppConstants;
 import jakarta.validation.Valid;
@@ -55,4 +57,6 @@ public class PostController {
         postService.deletePost(id);
         return new ResponseEntity<>("Post successfully deleted ", HttpStatus.OK);
     }
+
+
 }

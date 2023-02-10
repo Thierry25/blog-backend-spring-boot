@@ -19,12 +19,19 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(min=2, max=24, message = "Please enter a name between 2 and 24 characters")
+    @Size(min = 2, max = 24, message = "Please enter a name between 2 and 24 characters")
     private String name;
     @Email
     private String email;
-    @Size(min=5, max = 1440, message = "Please enter a comment between 5 and 1440 characters")
+    @Size(min = 5, max = 1440, message = "Please enter a comment between 5 and 1440 characters")
     private String body;
+
+    public Comment(String name, String email, String body) {
+        this.name = name;
+        this.email = email;
+        this.body = body;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     @ToString.Exclude
