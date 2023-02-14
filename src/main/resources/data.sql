@@ -10,3 +10,4 @@ INSERT INTO roles(id, name) VALUES(2, 'ROLE_ADMIN');
 INSERT INTO users_roles(user_id, role_id) VALUES(1, 1);
 INSERT INTO users_roles(user_id, role_id) VALUES(2, 2);
 
+-- username: thierry007 password: P@$$w0rd12345 -> latest user
